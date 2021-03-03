@@ -42,6 +42,15 @@
 #include <setmode.h>
 #include <xalloc.h>
 
+#ifdef _MSC_VER
+#include <io.h>
+#include <fcntl.h>
+#include <share.h>
+#define LSEEK _lseek
+#else
+#define LSEEK lseek
+#endif
+
 /* Lines are put into equivalence classes of lines that match in lines_differ.
    Each equivalence class is represented by one of these structures,
    but only while the classes are being computed.
@@ -124,7 +133,7 @@ sip (struct file_data *current, bool skip_test)
 	  bool was_binary = set_binary_mode (current->desc, 1);
 	  off_t buffered;
 	  file_block_read (current, current->bufsize);
-	  buffered = current->buffered;
+	  buffered = (off_t)current->buffered;
 
 	  if (! was_binary)
 	    {
@@ -133,7 +142,7 @@ sip (struct file_data *current, bool skip_test)
 		 descriptors like stdin might not start at offset
 		 zero.  */
 
-	      if (lseek (current->desc, - buffered, SEEK_CUR) == -1)
+	      if (LSEEK (current->desc, - buffered, SEEK_CUR) == -1)
 		pfatal_with_name (current->name);
 	      set_binary_mode (current->desc, 0);
 	      current->buffered = 0;

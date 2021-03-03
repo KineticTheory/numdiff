@@ -1476,7 +1476,7 @@ bc_out_long (val, size, space, out_char)
 
   if (space) (*out_char) (' ');
   sprintf (digits, "%ld", val);
-  len = strlen (digits);
+  len = (int)strlen (digits);
   while (size > len)
     {
       (*out_char) ('0');

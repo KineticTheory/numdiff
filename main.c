@@ -30,6 +30,14 @@
 #ifdef ENABLE_NLS
 #include<locale.h>
 #endif
+#ifdef _MSC_VER
+#include <io.h>
+#include <fcntl.h>
+#include <share.h>
+#define LSEEK _lseek
+#else
+#define LSEEK lseek
+#endif
 
 /* See cmpfns.c */
 extern int cmp_files (FILE* pf1, FILE* pf2, const argslist* argl, statlist* statres);
@@ -136,8 +144,9 @@ set_mtime_to_now (struct stat *st)
 # endif
 
 #endif /* ST_MTIM_NSEC */
-
+#ifndef _MSC_VER
   time (&st->st_mtime);
+#endif
 }
 
 /* cmp.file[f].desc markers */
@@ -182,7 +191,7 @@ int open_files (const char* name0, const char* name1)
 	    {
 	      if (S_ISREG (files[f].stat.st_mode))
 		{
-		  off_t pos = lseek (STDIN_FILENO, (off_t) 0, SEEK_CUR);
+     off_t pos = LSEEK(STDIN_FILENO, (off_t)0, SEEK_CUR);
 		  if (pos < 0)
 		    files[f].desc = ERRNO_ENCODE (errno);
 		  else

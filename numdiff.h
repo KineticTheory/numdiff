@@ -20,6 +20,13 @@
 #ifndef _NUMDIFF_H_
 #define _NUMDIFF_H_
 
+#ifdef WIN32
+#define _WINSOCKAPI_
+#include <WinSock2.h>
+#include <Windows.h>
+#include <sys/types.h>
+#endif
+
 #include "system.h"
 #include "bitvector.h"
 
@@ -567,7 +574,13 @@ struct change
 struct file_data {
     int             desc;	/* File descriptor  */
     char const      *name;	/* File name  */
+#ifdef _MSC_VER
+    struct _stat stat;
+    /* bool filefound; */
+    /* WIN32_FIND_DATA FileInformation; */
+#else
     struct stat     stat;	/* File status */
+#endif
 
     /* Buffer in which text of file is read.  */
     word *buffer;

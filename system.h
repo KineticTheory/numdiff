@@ -21,6 +21,10 @@
    59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 #include <config.h>
+#ifdef _MSC_VER
+#include <stdint.h>
+#endif
+
 
 /* Don't bother to support K&R C compilers any more; it's not worth
    the trouble.  These macros prevent some library modules from being
@@ -121,7 +125,9 @@
 #if HAVE_TIME_H
 # include <time.h>
 #else
+#  ifndef _MSC_VER
 # include <sys/time.h>
+#endif
 #endif
 
 #if HAVE_FCNTL_H
@@ -188,7 +194,7 @@
 # endif
 #endif
 
-#if HAVE_STDLIB_H
+#if HAVE_STDLIB_H || defined(_MSC_VER)
 # include <stdlib.h>
 #else
 # ifndef getenv
@@ -350,6 +356,10 @@ void *memchr ();
 
 /* Type used for fast comparison of several bytes at a time.  */
 
+//#ifndef uintmax_t
+//#define uintmax_t unsigned long long
+//#endif
+
 #ifndef word
 # define word uintmax_t
 #endif
@@ -359,10 +369,12 @@ void *memchr ();
 
 typedef ptrdiff_t lin;
 #define LIN_MAX PTRDIFF_MAX
+#ifndef _MSC_VER
 verify (lin_is_signed, TYPE_SIGNED (lin));
 verify (lin_is_wide_enough, sizeof (ptrdiff_t) <= sizeof (lin));
 verify (lin_is_printable_as_long, sizeof (lin) <= sizeof (long));
-
+#endif
+
 /* This section contains POSIX-compliant defaults for macros
    that are meant to be overridden by hand in config.h as needed.  */
 
