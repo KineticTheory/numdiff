@@ -68,7 +68,10 @@
 # define SIZE_MAX TYPE_MAXIMUM (size_t)
 #endif
 #ifndef SSIZE_MAX
-# define SSIZE_MAX TYPE_MAXIMUM (ssize_t)
+# define SSIZE_MAX TYPE_MAXIMUM (size_t)
+#endif
+#ifdef _MSC_VER
+#define ssize_t size_t
 #endif
 
 #undef MIN
@@ -89,7 +92,7 @@ block_read (int fd, char *buf, size_t nbytes)
 
   do
     {
-      size_t bytes_to_read = MIN (buflim - bp, readlim);
+      size_t bytes_to_read = MIN (buflim - bp, (int)readlim);
       ssize_t nread = read (fd, bp, bytes_to_read);
       if (nread <= 0)
 	{

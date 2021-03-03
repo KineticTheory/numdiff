@@ -48,7 +48,7 @@ out_of_memory()
 /* Runtime error will  print a message and stop the machine. */
 
 #ifndef VARARGS
-#ifdef __STDC__
+#if defined(__STDC__) || defined(_MSC_VER)
 void
 rt_error (char *mesg, ...)
 #else
@@ -82,7 +82,7 @@ rt_error (mesg, va_alist)
    to stop the execution. */
 
 #ifndef VARARGS
-#ifdef __STDC__
+#if defined(__STDC__) || defined(_MSC_VER)
 void
 rt_warn (char *mesg, ...)
 #else

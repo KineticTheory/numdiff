@@ -381,6 +381,7 @@ compareseq (lin xoff, lin xlim, lin yoff, lin ylim, bool find_minimal)
 	     and that case was handled above without calling `diag'.
 	     Let's verify that this is true.  */
 	  abort ();
+
 #if 0
 	  /* The two subsequences differ by a single insert or delete;
 	     record it and we are done.  */
@@ -464,7 +465,7 @@ discard_confusing_lines (struct file_data filevec[], int minimal)
       while ((tem = tem >> 2) > 0)
 	many *= 2;
 
-      for (i = 0; i < end; i++)
+      for (i = 0; i < (lin)end; i++)
 	{
 	  lin nmatch;
 	  if (equivs[i] == 0)
@@ -472,7 +473,7 @@ discard_confusing_lines (struct file_data filevec[], int minimal)
 	  nmatch = counts[equivs[i]];
 	  if (nmatch == 0)
 	    discards[i] = 1;
-	  else if (nmatch > many)
+	  else if (nmatch > (lin)many)
 	    discards[i] = 2;
 	}
     }

@@ -223,7 +223,9 @@ void print_selhelp (const char* progname)
   printf ("-v, --version\n    %s\n\n", _("Show version number, Copyright, Distribution Terms and NO-Warranty"));
 }
 
+#ifndef _MSC_VER
 extern int errno;
+#endif
 extern char *optarg; 
 extern int optind;
 

@@ -33,7 +33,7 @@ void print_head (const char* str, size_t length)
 {
   const char* t;
 
-  for (t = str; t - str < length; putchar(*t), t++);
+  for (t = str; t - str < (int)length; putchar(*t), t++);
 }
 
 static

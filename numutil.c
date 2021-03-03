@@ -105,7 +105,8 @@ anum (const char *str, const struct numfmt* pnf)
 
 	  if (*ptr == pnf->thsep)
 	    {
-	      unsigned long i;
+	      //kt unsigned long i;
+      __int64 i;
 	      char* ptr2;
 
 	      if ((first_sep))
